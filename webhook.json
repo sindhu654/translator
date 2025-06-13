@@ -1,0 +1,248 @@
+{
+  "name": "webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e9a3bf3d-f86b-49ea-94f6-5ed6bf637af3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1280,
+        20
+      ],
+      "id": "2e0ff63e-bd5e-466a-90cb-2b85bff6de7d",
+      "name": "Webhook",
+      "webhookId": "e9a3bf3d-f86b-49ea-94f6-5ed6bf637af3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop through all items and extract only the body\nreturn $input.all().map(item => {\n  return {\n    json: item.json.body\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1060,
+        20
+      ],
+      "id": "4b0e353d-a4c4-4e19-9e05-8d477aa7e19f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1n2N1I5Te2EOfvHfD7976W_dd_JIUcp70vX58ii1F5sI",
+          "mode": "list",
+          "cachedResultName": "webhook",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n2N1I5Te2EOfvHfD7976W_dd_JIUcp70vX58ii1F5sI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n2N1I5Te2EOfvHfD7976W_dd_JIUcp70vX58ii1F5sI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -840,
+        20
+      ],
+      "id": "2a4660f5-4516-4acd-84d5-b7188d1c6df5",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "EW8BojFF5ebTykRE",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1n2N1I5Te2EOfvHfD7976W_dd_JIUcp70vX58ii1F5sI",
+          "mode": "list",
+          "cachedResultName": "webhook",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n2N1I5Te2EOfvHfD7976W_dd_JIUcp70vX58ii1F5sI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n2N1I5Te2EOfvHfD7976W_dd_JIUcp70vX58ii1F5sI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -620,
+        20
+      ],
+      "id": "0904cce7-7ccc-4614-b1f9-341fede6413f",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "EW8BojFF5ebTykRE",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The name is : {{ $json.username }} and their assigned item is : {{ $json.action_item }}\n\ni NEED YOU TO CREATE A SUMMARIZED PARAGRAPH FOR THIS",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        20
+      ],
+      "id": "4b5c9692-681d-4561-9a03-d700fbed4085",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        240
+      ],
+      "id": "28b05b0c-4828-4806-be73-d9068e054fb4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xDeXoSOidXKoqHMp",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "sindhujakamaraj27@gmail.com",
+        "subject": "Assignment ",
+        "message": "=Dear {{ $('Google Sheets1').item.json.username }} , \n\n{{ $json.output }}\n\nBest regards ,\nSindhiya",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c43be206-ecaa-48e9-ba22-0892a49e961b",
+      "name": "Gmail",
+      "webhookId": "cfdc8e18-a337-43ea-b841-f90a49cab764",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zXKSTJWr9tOhrnZ6",
+          "name": "Gmail account 4"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bcf29b41-5e5c-4ab3-8969-914e58a45db0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8df27c27ebdd005e11db45d64edf3c4da9abc1a5843be3b299af1b886f484d22"
+  },
+  "id": "mqlUqoGzQ1cyRLtI",
+  "tags": []
+}
